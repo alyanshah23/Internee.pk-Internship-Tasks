@@ -10,7 +10,7 @@ const humidityvaluetxt = document.querySelector(".Humidity-value-txt")
 const windvaluetxt = document.querySelector(".wind-value-txt")
 const weatherSummaryImg = document.querySelector(".weather-summary-img")
 const currentDateTxt = document.querySelector(".current-date-txt")
-
+const forecastItemsContainer = document.querySelector(".forecast-items-container")
 
 
 const apiKey = "1310332d62cbecbeb10acce7c398c317"
@@ -79,8 +79,41 @@ async function updateWeatherInfo(city) {
     windvaluetxt.textContent = speed + "M/s"
     currentDateTxt.textContent = getCurrentDate()
     weatherSummaryImg.src = `assets/weather/${getWeatherIcon(id)}`
+    await updateForecastsInfo(city)
     showDisplaySection(weatherInfoSection)
 
+}
+async function updateForecastsInfo(city) {
+    const forecastsData = await getFetchData("forecast", city)
+    const timesTaken = "12:00:00"
+    const todayDate = new Date().toISOString().split("T")[0]
+    forecastItemsContainer.innerHTML = ""
+    forecastsData.list.forEach(forecastWeather => {
+        if (forecastWeather.dt_txt.includes(timesTaken) &&
+            !forecastWeather.dt_txt.includes(todayDate)) {
+            updateForecastsItems(forecastWeather)
+        }
+    })
+}
+function updateForecastsItems(weatherData) {
+    const {
+        dt_txt: date,
+        weather: [{ id }],
+        main: { temp }
+    } = weatherData
+    const dateTaken = new Date(date)
+    const dateOptions ={
+        day:"2-digit",
+        month:"short"
+    }
+    const forecastItem = `
+    <div class="forecast-item">
+                    <h5 class="forecast-item-date regular-txt">05 Aug</h5>
+                    <img src="./assets/weather/${getWeatherIcon(id)}" alt="" class="forecast-item-img">
+                    <h5 class="forecast-iten-temp">${Math.round(temp)} °C</h5>
+                </div>
+    `
+    forecastItemsContainer.insertAdjacentHTML("beforeend", forecastItem)
 }
 function showDisplaySection(section) {
     [weatherInfoSection, searchCitySection, notFoundSelection]
