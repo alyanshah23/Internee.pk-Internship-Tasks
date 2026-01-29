@@ -102,13 +102,14 @@ function updateForecastsItems(weatherData) {
         main: { temp }
     } = weatherData
     const dateTaken = new Date(date)
-    const dateOptions ={
-        day:"2-digit",
-        month:"short"
+    const dateOption = {
+        day: "2-digit",
+        month: "short"
     }
+    const dateResult = dateTaken.toLocaleDateString("en-US", dateOption)
     const forecastItem = `
     <div class="forecast-item">
-                    <h5 class="forecast-item-date regular-txt">05 Aug</h5>
+                    <h5 class="forecast-item-date regular-txt">${dateResult}</h5>
                     <img src="./assets/weather/${getWeatherIcon(id)}" alt="" class="forecast-item-img">
                     <h5 class="forecast-iten-temp">${Math.round(temp)} °C</h5>
                 </div>
