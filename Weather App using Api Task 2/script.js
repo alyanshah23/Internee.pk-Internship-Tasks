@@ -76,6 +76,7 @@ async function updateWeatherInfo(city) {
     countryTxt.textContent = country
     tempTxt.textContent = Math.round(temp) + "°C"
     conditionTxt.textContent = main
+    changeBackgroundById(id)
     humidityvaluetxt.textContent = humidity + "%"
     windvaluetxt.textContent = speed + "M/s"
     currentDateTxt.textContent = getCurrentDate()
@@ -145,3 +146,25 @@ locationbtn.addEventListener("click", () => {
         }
     )
 })
+
+function changeBackgroundById(id) {
+    const app = document.getElementById("app");
+    // document.documentElement.style.setProperty('--blur-level', '5px');
+    if (id >= 200 && id <= 232) {
+        app.style.backgroundImage = "url(assets/Backgrounds/thunderstorm.jpg)";
+    } else if (id >= 300 && id <= 321) {
+        app.style.backgroundImage = "url(assets/Backgrounds/drizzle.jpg)";
+    } else if (id >= 500 && id <= 531) {
+        app.style.backgroundImage = "url(assets/Backgrounds/rain.jpg)";
+    } else if (id >= 600 && id <= 622) {
+        app.style.backgroundImage = "url(assets/Backgrounds/snow.jpg)";
+    } else if (id >= 701 && id <= 781) {
+        app.style.backgroundImage = "url(assets/Backgrounds/haze.jpg)";
+    } else if (id === 800) {
+        app.style.backgroundImage = "url(assets/Backgrounds/clear.jpg)";
+    } else if (id >= 801 && id <= 804) {
+        app.style.backgroundImage = "url(assets/Backgrounds/clouds.jpg)";
+    } else {
+        app.style.backgroundImage = "url(assets/Backgrounds/bg2.jpg)";
+    }
+}
