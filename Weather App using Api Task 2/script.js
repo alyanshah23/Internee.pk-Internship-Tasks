@@ -11,6 +11,7 @@ const windvaluetxt = document.querySelector(".wind-value-txt")
 const weatherSummaryImg = document.querySelector(".weather-summary-img")
 const currentDateTxt = document.querySelector(".current-date-txt")
 const forecastItemsContainer = document.querySelector(".forecast-items-container")
+const locationbtn = document.querySelector(".location-btn")
 
 
 const apiKey = "1310332d62cbecbeb10acce7c398c317"
@@ -121,3 +122,26 @@ function showDisplaySection(section) {
         .forEach(section => section.style.display = "none")
     section.style.display = "flex"
 }
+
+locationbtn.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+        alert("This function is Not Supported By your Browser");
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+            updateWeatherInfo(data.name);
+
+        },
+        () => {
+            alert("Location aceess denied")
+        }
+    )
+})
